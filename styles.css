@@ -1,0 +1,17 @@
+.container{
+    max-width: 600px;
+}
+
+body {
+    background-color: aliceblue;
+}
+
+.btn{
+    background: rgb(110, 208, 159);
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.btn:focus{
+    outline: none !important;
+}
