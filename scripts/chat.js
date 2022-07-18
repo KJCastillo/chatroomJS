@@ -25,11 +25,23 @@ class Chatroom {
         return response;
         //wait for async to resolve then save response to chat collection
     }
+    getChats(callback){
+        this.chats
+        //use Snapshot for real time events, docChanges returns an array for all the changes
+        //forEach to cycle thru array and do something with each change
+        .onSnapshot(snapshot => {
+            snapshot.docChanges().forEach(change => {
+                if(change.type === "added"){
+                    //update UI
+                    callback(change.doc.data())
+                }
+            })
+        })
+    }
 }
 
 const chatroom = new Chatroom('gaming', 'kevin');
 
-chatroom.addChat('hey hey')
-.then(() => {console.log('chat added')})
-.catch(err => console.log(err))
-//addChat() returns a promise so .then() made
+chatroom.getChats((data) => {
+    console.log(data);
+})
