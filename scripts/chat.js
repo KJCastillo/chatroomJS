@@ -27,6 +27,8 @@ class Chatroom {
     }
     getChats(callback){
         this.chats
+        .where('room', '==', this.room)
+        .orderBy('created_at')
         //use Snapshot for real time events, docChanges returns an array for all the changes
         //forEach to cycle thru array and do something with each change
         .onSnapshot(snapshot => {
@@ -44,4 +46,4 @@ const chatroom = new Chatroom('gaming', 'kevin');
 
 chatroom.getChats((data) => {
     console.log(data);
-})
+});
