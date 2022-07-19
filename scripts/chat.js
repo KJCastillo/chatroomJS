@@ -1,14 +1,10 @@
-//add new chat documents
-//set up a real time listener to get new chats
-//update username
-//update the chatroom
-
 class Chatroom {
     //OOP, pass parameters below
     constructor(room, username){
         this.room = room;
         this.username = username;
         this.chats = db.collection("chats");
+        this.unsub;
     }
     async addChat(message){
         //format a chat object
@@ -20,13 +16,12 @@ class Chatroom {
             created_at: firebase.firestore.Timestamp.fromDate(now)
         };
         //save the chat document
-
         const response = await this.chats.add(chat);
         return response;
         //wait for async to resolve then save response to chat collection
     }
     getChats(callback){
-        this.chats
+       this.unsub = this.chats
         .where('room', '==', this.room)
         .orderBy('created_at')
         //use Snapshot for real time events, docChanges returns an array for all the changes
@@ -40,6 +35,16 @@ class Chatroom {
             })
         })
     }
+    updateName(username){
+        this.username = username;
+    }
+    updateRoom(room){
+        this.room = room;
+        console.log('room updated')
+        if(this.unsub){
+            this.unsub();
+        }
+    }
 }
 
 const chatroom = new Chatroom('gaming', 'kevin');
@@ -47,3 +52,10 @@ const chatroom = new Chatroom('gaming', 'kevin');
 chatroom.getChats((data) => {
     console.log(data);
 });
+
+// setTimeout(() => {
+//     chatroom.updateRoom('gaming')
+//     chatroom.updateName('kev')
+//     chatroom.getChats((data) => {console.log(data)});
+//     chatroom.addChat('sup')
+// }, 3000)
