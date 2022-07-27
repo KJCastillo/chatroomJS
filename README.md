@@ -1,1 +1,3 @@
-console.firebase.google.com
+chatroom app
+
+OOP / JavaScript / Local Storage / Google Firebase
